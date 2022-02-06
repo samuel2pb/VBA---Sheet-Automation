@@ -13,6 +13,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim pathx As Worksheet
+Dim camx As Workbook
+Dim pegx_path As String
+Dim fca_path As String
 
 Dim data_parcx(2) As Date
 
@@ -53,7 +57,7 @@ End If
 
 dp = data_parc.Value
 
-Set conta_azul = Workbooks.Open("\\Engenharia\projetos\Dropbox\ASS TECNICA\CONTROLE DE ASSISTÊNCIA TÉCNICA\MAC TOTAL ICE\FORMULÁRIO CONTA AZUL.xlsx", 0, False, , , , True, , , , False, , False)
+Set conta_azul = Workbooks.Open(fca_path, 0, False, , , , True, , , , False, , False)
 
 Set formulario = conta_azul.Sheets("LANÇAMENTO")
 
@@ -286,7 +290,7 @@ ElseIf ped1_cat1 <> "" Then
 End If
 
 
-Set pecas_garantia = Workbooks.Open("\\Engenharia\projetos\Dropbox\ASS TECNICA\CONTROLE DE ASSISTÊNCIA TÉCNICA\MAC TOTAL ICE\CONTROLE PEÇAS GARANTIA.xlsx", 0, False, , , , True, , , , False, , False)
+Set pecas_garantia = Workbooks.Open(pegx_path, 0, False, , , , True, , , , False, , False)
 
 Set geral = pecas_garantia.Sheets("PEÇAS GARANTIA")
 
@@ -953,6 +957,13 @@ End Sub
 
 Private Sub UserForm_Initialize()
 
+
+Set camx = Workbooks.Open(ThisWorkbook.Path & "\" & "Local Paths.xlsx", 0, False, , , , True, , , , False, , False)
+Set pathx = camx.Sheets("Caminhos")
+
+pegx_path = pathx.Cells.Find("PEG", , xlValues, xlWhole).Offset(1, 0).Value
+fca_path = pathx.Cells.Find("GAT", , xlValues, xlWhole).Offset(1, 0).Value
+camx.Close (False)
 
 linha = Sheets("VALIDAÇÃO").Range("S1000000").End(xlUp).Row
 nome.RowSource = "VALIDAÇÃO!S2:S" & linha
